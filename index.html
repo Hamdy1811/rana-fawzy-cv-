@@ -1,0 +1,52 @@
+<script>
+// ============= Skill Flip Cards (Interactive Tags) =============
+(function() {
+  const skillDescriptions = {
+    // Arabic
+    ar: {
+      "القيادة الاستراتيجية": "القدرة على وضع الرؤية طويلة المدى وتحويلها إلى أهداف قابلة للتنفيذ عبر فرق متعددة الوظائف.",
+      "حملات متكاملة": "تخطيط وتنفيذ حملات تجمع بين القنوات الرقمية والإعلامية لتعزيز صورة العلامة التجارية.",
+      "تحليل الأداء والميزانية": "تقييم نتائج الحملات وتحسين كفاءة الإنفاق التسويقي باستخدام مؤشرات الأداء الرئيسية.",
+      "علاقات أصحاب المصلحة": "بناء علاقات مؤثرة مع الشركاء ووسائل الإعلام لضمان دعم استراتيجيات الاتصال.",
+      "إدارة المحتوى والإعلام": "تطوير محتوى متكامل يعزز المصداقية ويزيد التفاعل مع الجمهور المستهدف.",
+      "قيادة فرق العمل": "إلهام الفرق لتحقيق نتائج متميزة من خلال التواصل الفعّال والدعم المستمر."
+    },
+    // English
+    en: {
+      "Strategic Leadership": "Defines long-term vision and converts it into actionable goals across multi-functional teams.",
+      "Integrated Campaigns": "Plans and executes cross-channel campaigns blending digital, media, and PR to strengthen brand image.",
+      "Budgeting & ROI": "Monitors campaign results and optimizes marketing spend for higher ROI and performance efficiency.",
+      "Stakeholder Relations": "Builds strong relationships with media, partners, and institutions to support corporate positioning.",
+      "Content & Media Management": "Creates cohesive content strategies enhancing brand reputation and engagement.",
+      "Team Leadership": "Motivates teams to achieve excellence through clear communication and collaborative culture."
+    }
+  };
+
+  // Inject tooltips or flip effect for all .skill-pill
+  document.querySelectorAll('.skill-pill').forEach(skill => {
+    skill.classList.add('cursor-pointer', 'transition', 'duration-300', 'transform', 'hover:scale-105');
+    const text = skill.innerText.trim();
+
+    // Create hidden flip container
+    const flipContainer = document.createElement('div');
+    flipContainer.className = 'hidden text-xs leading-relaxed text-center text-gray-600 mt-2 px-2';
+    skill.insertAdjacentElement('afterend', flipContainer);
+
+    // Add event listener
+    skill.addEventListener('click', () => {
+      const lang = document.documentElement.lang === 'ar' ? 'ar' : 'en';
+      const desc = skillDescriptions[lang][text] || '';
+      flipContainer.innerText = desc;
+
+      // Toggle display
+      if (flipContainer.classList.contains('hidden')) {
+        flipContainer.classList.remove('hidden');
+        skill.classList.add('bg-[var(--navy)]', 'text-white', 'shadow-md');
+      } else {
+        flipContainer.classList.add('hidden');
+        skill.classList.remove('bg-[var(--navy)]', 'text-white', 'shadow-md');
+      }
+    });
+  });
+})();
+</script>
