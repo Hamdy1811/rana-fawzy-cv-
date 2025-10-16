@@ -1,52 +1,292 @@
-<script>
-// ============= Skill Flip Cards (Interactive Tags) =============
-(function() {
-  const skillDescriptions = {
-    // Arabic
-    ar: {
-      "القيادة الاستراتيجية": "القدرة على وضع الرؤية طويلة المدى وتحويلها إلى أهداف قابلة للتنفيذ عبر فرق متعددة الوظائف.",
-      "حملات متكاملة": "تخطيط وتنفيذ حملات تجمع بين القنوات الرقمية والإعلامية لتعزيز صورة العلامة التجارية.",
-      "تحليل الأداء والميزانية": "تقييم نتائج الحملات وتحسين كفاءة الإنفاق التسويقي باستخدام مؤشرات الأداء الرئيسية.",
-      "علاقات أصحاب المصلحة": "بناء علاقات مؤثرة مع الشركاء ووسائل الإعلام لضمان دعم استراتيجيات الاتصال.",
-      "إدارة المحتوى والإعلام": "تطوير محتوى متكامل يعزز المصداقية ويزيد التفاعل مع الجمهور المستهدف.",
-      "قيادة فرق العمل": "إلهام الفرق لتحقيق نتائج متميزة من خلال التواصل الفعّال والدعم المستمر."
-    },
-    // English
-    en: {
-      "Strategic Leadership": "Defines long-term vision and converts it into actionable goals across multi-functional teams.",
-      "Integrated Campaigns": "Plans and executes cross-channel campaigns blending digital, media, and PR to strengthen brand image.",
-      "Budgeting & ROI": "Monitors campaign results and optimizes marketing spend for higher ROI and performance efficiency.",
-      "Stakeholder Relations": "Builds strong relationships with media, partners, and institutions to support corporate positioning.",
-      "Content & Media Management": "Creates cohesive content strategies enhancing brand reputation and engagement.",
-      "Team Leadership": "Motivates teams to achieve excellence through clear communication and collaborative culture."
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>رنا فوزي — السيرة الذاتية</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --navy: #0b2540;
+      --muted: #6b7280;
+      --line: #e6eef8;
+      --soft: #f6f8fb;
+      --paper: #ffffff;
     }
-  };
 
-  // Inject tooltips or flip effect for all .skill-pill
-  document.querySelectorAll('.skill-pill').forEach(skill => {
-    skill.classList.add('cursor-pointer', 'transition', 'duration-300', 'transform', 'hover:scale-105');
-    const text = skill.innerText.trim();
+    html[dir="rtl"] { font-family: 'Cairo', sans-serif; }
+    html[dir="ltr"] { font-family: 'Inter', sans-serif; }
+    body { background: var(--soft); color: var(--navy); }
 
-    // Create hidden flip container
-    const flipContainer = document.createElement('div');
-    flipContainer.className = 'hidden text-xs leading-relaxed text-center text-gray-600 mt-2 px-2';
-    skill.insertAdjacentElement('afterend', flipContainer);
+    .cv-wrap { max-width: 880px; margin: 28px auto; background: var(--paper); border-radius: 12px; box-shadow: 0 12px 28px rgba(11,37,64,0.08); overflow: hidden; }
 
-    // Add event listener
-    skill.addEventListener('click', () => {
-      const lang = document.documentElement.lang === 'ar' ? 'ar' : 'en';
-      const desc = skillDescriptions[lang][text] || '';
-      flipContainer.innerText = desc;
+    /* Header */
+    .angle-header { position: relative; background: var(--navy); height: 140px; clip-path: polygon(100% 0, 35% 0, 0 100%, 100% 100%); }
+    .ltr .angle-header { clip-path: polygon(0 0, 65% 0, 100% 100%, 0% 100%); }
 
-      // Toggle display
-      if (flipContainer.classList.contains('hidden')) {
-        flipContainer.classList.remove('hidden');
-        skill.classList.add('bg-[var(--navy)]', 'text-white', 'shadow-md');
-      } else {
-        flipContainer.classList.add('hidden');
-        skill.classList.remove('bg-[var(--navy)]', 'text-white', 'shadow-md');
+    /* Photo */
+    .photo-wrap { position:absolute; right:28px; top:28px; width:120px; height:120px; border-radius:999px; border:6px solid #fff; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,0.15); background:#fff; transition:transform 300ms ease; }
+    .photo-wrap:hover { transform:translateY(-4px); }
+    .photo-wrap img { width:100%; height:100%; object-fit:cover; }
+    .ltr .photo-wrap { left:28px; right:auto; }
+
+    /* Sidebar */
+    .sidebar { background:#fafdff; padding:36px 26px; border-left:1px solid var(--line); min-height:760px; }
+    .ltr .sidebar { border-right:1px solid var(--line); border-left:none; }
+
+    .name-block { margin-right:160px; margin-top:10px; line-height:1.4; }
+    .ltr .name-block { margin-left:160px; margin-right:0; }
+    .name { font-size:30px; font-weight:800; }
+    .title { font-weight:600; color:rgba(11,37,64,0.8); }
+
+    .sec-title { font-weight:700; color:var(--navy); margin-bottom:8px; }
+    .sec-divider { height:2px; background:var(--line); margin:12px 0 18px; }
+
+    .contact-item { display:flex; gap:10px; align-items:center; color:var(--muted); font-size:13px; margin-bottom:8px; }
+
+    .skill-pill { display:block; padding:8px 10px; border-radius:6px; background:#fff; border:1px solid var(--line); color:var(--muted); font-weight:600; font-size:13px; margin-bottom:8px; text-align:center; transition: all 0.3s ease; user-select:none; cursor:pointer; }
+    .skill-pill:active { transform: scale(0.97); }
+
+    .content { padding:36px; }
+
+    /* Lang toggle */
+    .lang-toggle { position:absolute; top:12px; left:16px; background:rgba(255,255,255,0.95); padding:4px 6px; border-radius:8px; border:1px solid var(--line); display:flex; gap:6px; z-index:40; font-size:12px; box-shadow:0 4px 10px rgba(0,0,0,0.05); }
+    .lang-btn { padding:3px 8px; border-radius:6px; font-weight:700; cursor:pointer; transition: all .2s ease; }
+    .lang-btn:hover { transform:translateY(-2px); }
+    .lang-btn.active { background: var(--navy); color: white; }
+
+    .timeline { position:relative; padding:6px 0; }
+    .timeline::before { content:''; position:absolute; right:6px; top:6px; bottom:6px; width:2px; background:var(--line); border-radius:3px; }
+    .ltr .timeline::before { left:6px; right:auto; }
+    .timeline-item { position:relative; margin-bottom:22px; padding-right:36px; }
+    .timeline-dot { position:absolute; right:0; top:6px; width:10px; height:10px; border-radius:999px; background:var(--navy); border:3px solid #fff; }
+    .ltr .timeline-item { padding-left:36px; padding-right:0; }
+    .ltr .timeline-dot { left:0; right:auto; }
+
+    .muted { color: var(--muted); }
+
+    @media print { .lang-toggle { display:none !important; } }
+  </style>
+</head>
+
+<body>
+  <div id="page" class="cv-wrap">
+
+    <!-- Toggle -->
+    <div id="langToggle" class="lang-toggle">
+      <button id="btnEN" class="lang-btn">EN</button>
+      <button id="btnAR" class="lang-btn active">AR</button>
+    </div>
+
+    <!-- Header -->
+    <div class="angle-header">
+      <div class="photo-wrap">
+        <img src="https://ik.imagekit.io/weo7pcw8v/Rana%20Fawzy.jpg?updatedAt=1760488271426" alt="رنا فوزي">
+      </div>
+    </div>
+
+    <!-- ARABIC VERSION -->
+    <div id="cv-ar" class="flex flex-col md:flex-row">
+      <aside class="sidebar md:w-1/3">
+        <div class="name-block">
+          <div class="name">رنا فوزي</div>
+          <div class="title">مساعدة المدير العام — الاتصالات</div>
+        </div>
+
+        <div class="sec-divider"></div>
+
+        <div class="sec-title">المهارات</div>
+        <div class="mt-2 grid grid-cols-1 gap-2">
+          <span class="skill-pill">القيادة الاستراتيجية</span>
+          <span class="skill-pill">حملات متكاملة</span>
+          <span class="skill-pill">تحليل الأداء والميزانية</span>
+          <span class="skill-pill">علاقات أصحاب المصلحة</span>
+          <span class="skill-pill">إدارة المحتوى والإعلام</span>
+          <span class="skill-pill">قيادة فرق العمل</span>
+        </div>
+      </aside>
+
+      <main class="content md:w-2/3">
+        <section>
+          <div class="sec-title">الأنشطة الشخصية والمشاركة المجتمعية</div>
+          <div class="sec-divider"></div>
+          <ul class="list-disc list-inside text-sm muted space-y-2">
+            <li>مرشحة لعضوية مجلس الإدارة — نادي الزهور الرياضي.</li>
+            <li>لاعبة سابقة في كرة السلة — نادي الزهور.</li>
+            <li>تسعى لتطبيق خبرتها المهنية في الاتصال والإدارة لتحسين خدمات الأعضاء.</li>
+          </ul>
+        </section>
+
+        <section class="mt-6">
+          <div class="sec-title">الخبرات العملية</div>
+          <div class="sec-divider"></div>
+
+          <div class="timeline mt-4">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="font-semibold">شركة السيارات بالغاز الطبيعي (كار غاز)</div>
+              <div class="muted text-sm">مساعدة المدير العام — الاتصالات (قسم التسويق) • يوليو 2015 – حتى الآن</div>
+              <ul class="list-disc list-inside text-sm muted mt-2 space-y-1">
+                <li>قيادة استراتيجية الاتصالات المؤسسية وتحفيز النمو.</li>
+                <li>إدارة حملات تسويقية متعددة القنوات رفعت التفاعل بنسبة 35٪.</li>
+                <li>تعزيز العلاقات مع وسائل الإعلام والجهات الحكومية.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="font-semibold">مديرة الاتصالات التسويقية</div>
+              <div class="muted text-sm">يوليو 2019 – يونيو 2025</div>
+              <ul class="list-disc list-inside text-sm muted mt-2 space-y-1">
+                <li>تحسين العائد على الاستثمار بنسبة 12٪ سنويًا.</li>
+                <li>الإشراف على الوكالات والمحتوى لتوحيد الرسائل.</li>
+                <li>تعديل الحملات استجابة لاتجاهات السوق.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ENGLISH VERSION -->
+    <div id="cv-en" class="hidden flex flex-col md:flex-row ltr">
+      <aside class="sidebar md:w-1/3">
+        <div class="name-block">
+          <div class="name">Rana Fawzy</div>
+          <div class="title">Assistant General Manager — Communications</div>
+        </div>
+
+        <div class="sec-divider"></div>
+
+        <div class="sec-title">Skills</div>
+        <div class="mt-2 grid grid-cols-1 gap-2">
+          <span class="skill-pill">Strategic Leadership</span>
+          <span class="skill-pill">Integrated Campaigns</span>
+          <span class="skill-pill">Budgeting & ROI</span>
+          <span class="skill-pill">Stakeholder Relations</span>
+          <span class="skill-pill">Content & Media Management</span>
+          <span class="skill-pill">Team Leadership</span>
+        </div>
+      </aside>
+
+      <main class="content md:w-2/3">
+        <section>
+          <div class="sec-title">Personal Activities & Community Commitment</div>
+          <div class="sec-divider"></div>
+          <ul class="list-disc list-inside text-sm muted space-y-2">
+            <li>Candidate for the Board of Directors — Al Zohour Sporting Club.</li>
+            <li>Former basketball player — Al Zohour Club.</li>
+            <li>Applies professional expertise to improve member services and facilities.</li>
+          </ul>
+        </section>
+
+        <section class="mt-6">
+          <div class="sec-title">Professional Experience</div>
+          <div class="sec-divider"></div>
+
+          <div class="timeline mt-4">
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="font-semibold">Natural Gas Vehicles Company (Car Gas)</div>
+              <div class="muted text-sm">Assistant General Manager — Communications (Marketing Dept.) • Jul 2015 – Present</div>
+              <ul class="list-disc list-inside text-sm muted mt-2 space-y-1">
+                <li>Developed and implemented corporate communications strategies driving growth.</li>
+                <li>Led multi-channel marketing campaigns increasing online engagement by 35%.</li>
+                <li>Strengthened relationships with media and government entities.</li>
+              </ul>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="font-semibold">Marketing Communication Manager</div>
+              <div class="muted text-sm">Jul 2019 – Jun 2025</div>
+              <ul class="list-disc list-inside text-sm muted mt-2 space-y-1">
+                <li>Improved marketing ROI by 12% annually through data-driven planning.</li>
+                <li>Managed agencies ensuring unified messaging and timely delivery.</li>
+                <li>Adapted campaigns quickly in response to market trends.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <!-- Skill Flip Interaction -->
+  <script>
+  (function(){
+    const skillDescriptions = {
+      ar:{
+        "القيادة الاستراتيجية":"القدرة على صياغة رؤية واضحة وتحويلها إلى أهداف قابلة للتنفيذ.",
+        "حملات متكاملة":"تنسيق الحملات عبر القنوات المختلفة لتعزيز الهوية المؤسسية.",
+        "تحليل الأداء والميزانية":"مراقبة النتائج وتحسين كفاءة الإنفاق التسويقي.",
+        "علاقات أصحاب المصلحة":"بناء علاقات مستدامة مع الشركاء ووسائل الإعلام.",
+        "إدارة المحتوى والإعلام":"إنتاج محتوى يعزز التفاعل والمصداقية.",
+        "قيادة فرق العمل":"تحفيز الفرق لتحقيق التميز من خلال التواصل الفعّال."
+      },
+      en:{
+        "Strategic Leadership":"Defines vision and turns it into measurable objectives.",
+        "Integrated Campaigns":"Combines digital, PR, and media strategies effectively.",
+        "Budgeting & ROI":"Analyzes performance and optimizes marketing investments.",
+        "Stakeholder Relations":"Builds sustainable partnerships and communication bridges.",
+        "Content & Media Management":"Delivers credible, engaging brand narratives.",
+        "Team Leadership":"Motivates teams through collaboration and clear direction."
       }
+    };
+
+    document.querySelectorAll('.skill-pill').forEach(skill=>{
+      const flip=document.createElement('div');
+      flip.className='hidden text-xs leading-relaxed text-center text-gray-600 mt-2 px-2';
+      skill.insertAdjacentElement('afterend',flip);
+
+      skill.addEventListener('click',()=>{
+        const lang=document.documentElement.lang==='ar'?'ar':'en';
+        const desc=skillDescriptions[lang][skill.innerText.trim()]||'';
+        flip.innerText=desc;
+        flip.classList.toggle('hidden');
+        skill.classList.toggle('bg-[var(--navy)]');
+        skill.classList.toggle('text-white');
+        skill.classList.toggle('shadow-md');
+      });
     });
-  });
-})();
-</script>
+  })();
+  </script>
+
+  <!-- Language Toggle -->
+  <script>
+  (function(){
+    const btnEN=document.getElementById('btnEN');
+    const btnAR=document.getElementById('btnAR');
+    const cvEN=document.getElementById('cv-en');
+    const cvAR=document.getElementById('cv-ar');
+
+    function showEN(){
+      cvAR.classList.add('hidden');
+      cvEN.classList.remove('hidden');
+      document.documentElement.lang='en';
+      document.documentElement.dir='ltr';
+      btnEN.classList.add('active');
+      btnAR.classList.remove('active');
+    }
+
+    function showAR(){
+      cvEN.classList.add('hidden');
+      cvAR.classList.remove('hidden');
+      document.documentElement.lang='ar';
+      document.documentElement.dir='rtl';
+      btnAR.classList.add('active');
+      btnEN.classList.remove('active');
+    }
+
+    btnEN.addEventListener('click',showEN);
+    btnAR.addEventListener('click',showAR);
+  })();
+  </script>
+</body>
+</html>
